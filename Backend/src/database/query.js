@@ -1,4 +1,5 @@
 export const querys = {
+    //----------------------PRODUCTOS QUERY--------------------------------
     getAllProducts: "EXECUTE sp_ListarProductos;",
     getProducById: "EXECUTE sp_BuscarProducto @IdProducto;",
     addNewProduct: "EXECUTE sp_AgregarProducto @NombreProducto,@IdCategoria,@Descripcion;",
@@ -11,6 +12,14 @@ export const querys = {
     readCategory:"EXECUTE sp_BuscarCategoria @IdCategoria;",
     readCategories:"EXECUTE sp_ListarCategorias;",
     updateCategory: "EXECUTE sp_ModificarCategoria @IdCategoria,@Nombre;",
-    deleteCategory:"EXECUTE sp_EliminarCategoria @IdCategoria;"
+    deleteCategory:"EXECUTE sp_EliminarCategoria @IdCategoria;",
+
+    //----------------------------SUCURSALES QUERY----------------------------
+
+    addSucursal:"",
+    updateSucursal:"",
+    deleteSucursal:"",
+    readSucursales:"",
+    readSucursal:""
 
 };

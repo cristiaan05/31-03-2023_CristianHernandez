@@ -38,6 +38,12 @@ export async function getProducById(req,res){
 
 export async function addProduct(req, res) {
     const { nombreProducto, idCategoria, descripcion } = req.body;
+    if(nombreProducto==null || idCategoria==null){
+        return res.status(400).send({
+            message:"Data is missing",
+            successfull:false
+        })
+    }
     try {
         const pool = await getConnection()
         //verificamos si exista la categoria
@@ -46,7 +52,8 @@ export async function addProduct(req, res) {
             .query(querys.readCategory);
         if (existeCategoria.recordset.length == 0) {
             return res.status(400).send({
-                message: "La categoria no existe"
+                message: "La categoria no existe",
+                successfull:false
             });
         } else {
             try {
@@ -58,11 +65,13 @@ export async function addProduct(req, res) {
 
                 return res.status(200).send({
                     message: "Producto Añadido exitosamente",
-                    producto: [nombreProducto, idCategoria, descripcion]
+                    producto: [nombreProducto, idCategoria, descripcion],
+                    successfull:true
                 })
             } catch (error) {
                 return res.status(400).send({
-                    error: error
+                    error: error,
+                    successfull:false
                 })
             }
 

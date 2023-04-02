@@ -5,14 +5,14 @@ GO
 CREATE TABLE Categorias
 (
 	IdCategoria INT IDENTITY PRIMARY KEY,
-	Nombre VARCHAR(150),
+	Nombre VARCHAR(150) NOT NULL,
 );
 GO
 CREATE TABLE Productos
 (
 	IdProducto INT IDENTITY PRIMARY KEY,
-	NombreProducto VARCHAR(80),
-	IdCategoria INT,
+	NombreProducto VARCHAR(80) NOT NULL,
+	IdCategoria INT NOT NULL,
 	Descripcion VARCHAR(120),
 	FOREIGN KEY (IdCategoria)REFERENCES Categorias(IdCategoria),
 );
@@ -20,18 +20,18 @@ GO
 CREATE TABLE Sucursales
 (
 	IdSucursal INT IDENTITY PRIMARY KEY,
-	Nombre VARCHAR(80),
-	Direccion VARCHAR(120),
+	NombreSucursal VARCHAR(80) NOT NULL,
+	Direccion VARCHAR(120) NOT NULL,
 	Correo VARCHAR(80),
-	Departamento VARCHAR(80),
-	Municipio VARCHAR(120),
+	Departamento VARCHAR(80)NOT NULL,
+	Municipio VARCHAR(120) NOT NULL,
 	Telefono VARCHAR(15)
 );
 GO
 CREATE TABLE Inventario (
-  id_producto INT,
-  id_sucursal INT,
-  cantidad INT,
+  id_producto INT NOT NULL,
+  id_sucursal INT NOT NULL,
+  cantidad INT NOT NULL,
   PRIMARY KEY (id_producto, id_sucursal),
   FOREIGN KEY (id_producto) REFERENCES Productos(IdProducto),
   FOREIGN KEY (id_sucursal) REFERENCES Sucursales(IdSucursal)
@@ -201,6 +201,92 @@ AS
 		END CATCH
 	END;
 GO
+
+--------------------------------------PROCEDIMIENTOS DE SUCURSALES-------------------------
+CREATE PROCEDURE spAgregarSucursal @NombreSucursal VARCHAR(80), @Direccion VARCHAR(120),
+	@Correo VARCHAR(80),@Departamento VARCHAR(80), @Municipio VARCHAR(120), @Telefono VARCHAR(15)
+AS
+	BEGIN 
+		BEGIN TRY
+			BEGIN TRAN
+				INSERT INTO Sucursales(NombreSucursal,Direccion,Correo,Departamento,Municipio,Telefono)
+					VALUES(@NombreSucursal,@Direccion,@Correo,@Departamento,@Municipio,@Telefono);
+			COMMIT TRAN;
+		END TRY
+		BEGIN CATCH
+			PRINT Error_Message();
+			ROLLBACK TRAN;
+		END CATCH
+	END;
+GO
+CREATE PROCEDURE sp_EliminarSucursal @IdSucursal INT
+AS
+	BEGIN 
+		BEGIN TRY
+			BEGIN TRAN
+				DELETE Sucursales WHERE IdSucursal=@IdSucursal;
+			COMMIT TRAN;
+		END TRY
+		BEGIN CATCH
+			PRINT Error_Message();
+			ROLLBACK TRAN;
+		END CATCH
+	END;
+GO
+
+CREATE PROCEDURE sp_ModificarSucursal @IdSucursal INT,@NombreSucursal VARCHAR(80), @Direccion VARCHAR(120),
+	@Correo VARCHAR(80),@Departamento VARCHAR(80), @Municipio VARCHAR(120), @Telefono VARCHAR(15)
+AS
+	BEGIN
+		BEGIN TRY
+			BEGIN TRAN
+				UPDATE Sucursales SET NombreSucursal=@NombreSucursal,Direccion=@Direccion,
+					Correo=@Correo,Departamento=@Departamento,Municipio=@Municipio,Telefono=@Telefono
+						WHERE IdSucursal=@IdSucursal;
+			COMMIT TRAN;
+		END TRY
+		BEGIN CATCH
+			PRINT Error_Message();
+			ROLLBACK TRAN;
+		END CATCH
+	END;
+GO
+
+
+CREATE PROCEDURE sp_BuscarSucursal @IdSucursal INT
+AS
+	BEGIN
+		BEGIN TRY
+			BEGIN TRAN
+				SELECT *
+				FROM Sucursales 
+				WHERE IdSucursal=@IdSucursal;
+			COMMIT TRAN;
+		END TRY
+		BEGIN CATCH
+			PRINT Error_Message();
+			ROLLBACK TRAN;
+		END CATCH
+	END;
+GO
+
+CREATE PROCEDURE sp_ListarSucursales
+AS
+	BEGIN
+		BEGIN TRY
+			BEGIN TRAN
+				SELECT *
+				FROM Sucursales
+			COMMIT TRAN;
+		END TRY
+		BEGIN CATCH
+			PRINT Error_Message();
+			ROLLBACK TRAN;
+		END CATCH
+	END;
+GO
+--------------------------------------PROCEDIMIENTOS DE INVENTARIO-------------------------
+
 
 select * from dbo.Categorias;
 select * from Productos;
