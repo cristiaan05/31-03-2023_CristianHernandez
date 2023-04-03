@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/node,dotenv
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,dotenv
+# Created by https://www.toptal.com/developers/gitignore/api/react,node,dotenv
+# Edit at https://www.toptal.com/developers/gitignore?templates=react,node,dotenv
 
 ### dotenv ###
 .env
@@ -143,4 +143,17 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
-# End of https://www.toptal.com/developers/gitignore/api/node,dotenv
+### react ###
+.DS_*
+**/*.backup.*
+**/*.back.*
+
+node_modules
+
+*.sublime*
+
+psd
+thumb
+sketch
+
+# End of https://www.toptal.com/developers/gitignore/api/react,node,dotenv

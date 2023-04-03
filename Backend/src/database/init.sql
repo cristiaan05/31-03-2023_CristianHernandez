@@ -28,11 +28,11 @@ CREATE TABLE Sucursales
 	Telefono VARCHAR(15)
 );
 GO
-CREATE TABLE Inventario (
+CREATE TABLE Inventarios (
+  IdInventario INT IDENTITY PRIMARY KEY,
   id_producto INT NOT NULL,
   id_sucursal INT NOT NULL,
   cantidad INT NOT NULL,
-  PRIMARY KEY (id_producto, id_sucursal),
   FOREIGN KEY (id_producto) REFERENCES Productos(IdProducto),
   FOREIGN KEY (id_sucursal) REFERENCES Sucursales(IdSucursal)
 );
@@ -286,9 +286,94 @@ AS
 	END;
 GO
 --------------------------------------PROCEDIMIENTOS DE INVENTARIO-------------------------
+CREATE PROCEDURE spAgregarInventario @IdProducto INT, @IdSucursal INT,@Cantidad INT
+AS
+	BEGIN 
+		BEGIN TRY
+			BEGIN TRAN
+				INSERT INTO Inventarios(id_producto,id_sucursal,cantidad)
+					VALUES(@IdProducto,@IdSucursal,@Cantidad);
+			COMMIT TRAN;
+		END TRY
+		BEGIN CATCH
+			PRINT Error_Message();
+			ROLLBACK TRAN;
+		END CATCH
+	END;
+GO
+CREATE PROCEDURE sp_EliminarInventario @IdInventario INT
+AS
+	BEGIN 
+		BEGIN TRY
+			BEGIN TRAN
+				DELETE Inventarios WHERE IdInventario=@IdInventario;
+			COMMIT TRAN;
+		END TRY
+		BEGIN CATCH
+			PRINT Error_Message();
+			ROLLBACK TRAN;
+		END CATCH
+	END;
+GO
 
+CREATE PROCEDURE sp_ModificarInventario @IdInventario INT,@IdProducto INT, @IdSucursal INT,
+			@Cantidad INT
+AS
+	BEGIN
+		BEGIN TRY
+			BEGIN TRAN
+				UPDATE Inventarios SET id_producto=@IdProducto,id_sucursal=@IdSucursal,
+					cantidad=@Cantidad
+						WHERE IdInventario=@IdInventario;
+			COMMIT TRAN;
+		END TRY
+		BEGIN CATCH
+			PRINT Error_Message();
+			ROLLBACK TRAN;
+		END CATCH
+	END;
+GO
+
+
+CREATE PROCEDURE sp_BuscarInventario @IdInventario INT
+AS
+	BEGIN
+		BEGIN TRY
+			BEGIN TRAN
+				SELECT *
+				FROM Inventarios 
+				WHERE IdInventario=@IdInventario;
+			COMMIT TRAN;
+		END TRY
+		BEGIN CATCH
+			PRINT Error_Message();
+			ROLLBACK TRAN;
+		END CATCH
+	END;
+GO
+
+CREATE PROCEDURE sp_ListarInventarios
+AS
+	BEGIN
+		BEGIN TRY
+			BEGIN TRAN
+				SELECT *
+				FROM Inventarios
+			COMMIT TRAN;
+		END TRY
+		BEGIN CATCH
+			PRINT Error_Message();
+			ROLLBACK TRAN;
+		END CATCH
+	END;
+GO
 
 select * from dbo.Categorias;
 select * from Productos;
+select * from Sucursales;
+select * from Inventarios;
 
 delete from Categorias where IdCategoria=1;
+
+
+

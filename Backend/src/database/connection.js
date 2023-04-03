@@ -1,9 +1,9 @@
 import sql from "mssql";
 const dbSettings = {
-    user: 'prueba',
-    password: 'default123',
-    server: 'localhost',
-    database: 'gestiones',
+    user: process.env.USER_DB,
+    password: process.env.PASSWORD_DB,
+    server: process.env.SERVER,
+    database: process.env.DATABASE,
     options: {
         encrypt: true,
         trustServerCertificate: true

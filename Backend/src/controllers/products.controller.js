@@ -1,17 +1,18 @@
-import { getConnection, sql } from "../database/connection.js";
+import { sql } from "../database/connection.js";
 import { querys } from "../database/query.js";
+import { dbfun } from "../index.js";
 
 export async function getProducts(req, res) {
-    const pool = await getConnection()
+    const pool = await dbfun();
     const result = await pool.request().query(querys.getAllProducts);
     console.log(result.recordset)
-    return res.status(200).send({ products: result.recordset });
+    return res.status(200).send({ productos: result.recordset });
 }
 
 export async function getProducById(req,res){
     const {idProducto}=req.body;
     try {
-        const pool=await  getConnection();
+        const pool=await  dbfun();
 
         let product=await pool.request()
             .input("IdProducto",sql.Int,idProducto)
@@ -45,7 +46,7 @@ export async function addProduct(req, res) {
         })
     }
     try {
-        const pool = await getConnection()
+        const pool = await dbfun()
         //verificamos si exista la categoria
         const existeCategoria = await pool.request()
             .input("IdCategoria", sql.Int, idCategoria)
@@ -65,7 +66,7 @@ export async function addProduct(req, res) {
 
                 return res.status(200).send({
                     message: "Producto Añadido exitosamente",
-                    producto: [nombreProducto, idCategoria, descripcion],
+                    producto: { nombreProducto, idCategoria, descripcion },
                     successfull:true
                 })
             } catch (error) {
@@ -92,7 +93,7 @@ export async function updateProduct(req, res) {
 
 
     try {
-        const pool = await getConnection();
+        const pool = await dbfun();
         let updatedProduct = await pool.request()
             .input("IdProducto", sql.Int, idProducto)
             .input("NombreProducto", sql.VarChar, nombreProducto)
@@ -120,7 +121,7 @@ export async function deleteProduct(req, res) {
     const { idProducto } = req.body
 
     try {
-        const pool = await getConnection();
+        const pool = await dbfun();
         let productDeleted = await pool.request()
             .input("IdProducto", sql.Int, idProducto)
             .query(querys.deleteProduct);
