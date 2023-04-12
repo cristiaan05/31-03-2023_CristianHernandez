@@ -108,7 +108,7 @@ function ModalForm({ titulo, content }) {
                         <Form.Control type="text"
                             placeholder="Ingrese Nombre"
                             name='nombre'
-                            value={formDataCat.nombre} onChange={handleInputChangeCat} />
+                            value={formDataCat.nombre} onChange={handleInputChangeCat} required/>
                     </Form.Group>
                     <Button variant="primary" type="submit">
                         Crear
@@ -157,7 +157,7 @@ function ModalForm({ titulo, content }) {
                         <Form.Control type="text"
                             placeholder="Ingrese Nombre"
                             name='nombreProducto'
-                            value={formDataP.nombreProducto} onChange={handleInputChangeP} />
+                            value={formDataP.nombreProducto} onChange={handleInputChangeP} required/>
                     </Form.Group>
                     <Form.Group className="mb-3" id="idCategoria">
                         <Form.Label>Id Categoria</Form.Label>
@@ -165,7 +165,7 @@ function ModalForm({ titulo, content }) {
                             id="idCategoria"
                             name="idCategoria"
                             value={formDataP.idCategoria}
-                            onChange={handleInputChangeP}
+                            onChange={handleInputChangeP} required
                         >
                              <option value="">Seleccione una categoria</option>
                             {categorias && categorias.map((cat) => (
@@ -233,14 +233,14 @@ function ModalForm({ titulo, content }) {
                         <Form.Control type="text"
                             placeholder="Ingrese Nombre"
                             name='nombreSucursal'
-                            value={formDataS.nombreSucursal} onChange={handleInputChangeS} />
+                            value={formDataS.nombreSucursal} onChange={handleInputChangeS} required/>
                     </Form.Group>
                     <Form.Group className="mb-3" id="direccion">
                         <Form.Label>Direccion</Form.Label>
                         <Form.Control type="text"
                             placeholder="Ingrese Direccion"
                             name='direccion'
-                            value={formDataS.direccion} onChange={handleInputChangeS} />
+                            value={formDataS.direccion} onChange={handleInputChangeS} required/>
                     </Form.Group>
                     <Form.Group className="mb-3" id="correo">
                         <Form.Label>Correo</Form.Label>
@@ -255,7 +255,7 @@ function ModalForm({ titulo, content }) {
                             id="departamento"
                             name="departamento"
                             value={formDataS.departamento}
-                            onChange={handleInputChangeS}
+                            onChange={handleInputChangeS} required
                         >
                              <option value="">Seleccione un departamento</option>
                             {Departamentos && Departamentos.map((cat, index) => (
@@ -271,7 +271,7 @@ function ModalForm({ titulo, content }) {
                             id="municipio"
                             name="municipio"
                             value={formDataS.municipio}
-                            onChange={handleInputChangeS}
+                            onChange={handleInputChangeS} required
                         >
                              <option value="">Seleccione un municipio</option>
                             {departa && departa.muni.map((cat, index) => (
@@ -337,7 +337,7 @@ function ModalForm({ titulo, content }) {
                             id="idProducto"
                             name="idProducto"
                             value={formDataI.idProducto}
-                            onChange={handleInputChangeI}
+                            onChange={handleInputChangeI} required
                         >
                              <option value="">Seleccione un producto</option>
                             {productos && productos.map((product) => (
@@ -353,7 +353,7 @@ function ModalForm({ titulo, content }) {
                             id="idSucursal"
                             name="idSucursal"
                             value={formDataI.idSucursal}
-                            onChange={handleInputChangeI}
+                            onChange={handleInputChangeI} required
                         >
                             <option value="">Seleccione una sucursal</option>   
                             {sucursales && sucursales.map((sucur) => (
@@ -368,7 +368,7 @@ function ModalForm({ titulo, content }) {
                         <Form.Control type="number"
                             placeholder="Ingrese cantidad"
                             name='cantidad'
-                            value={formDataI.cantidad} onChange={handleInputChangeI} />
+                            value={formDataI.cantidad} onChange={handleInputChangeI} required/>
                     </Form.Group>
                     <Button variant="primary" type="submit">
                         Crear Inventario
