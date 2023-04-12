@@ -4,7 +4,7 @@ import { addInventario, deleteInventario, getInventarios, updateInventario } fro
 const routerInventario=Router();
 
 routerInventario.post('/addInventario',addInventario);
-routerInventario.put('/updateInventari',updateInventario);
+routerInventario.put('/updateInventario',updateInventario);
 routerInventario.delete('/deleteInventario',deleteInventario)
 routerInventario.get('/getInventarios',getInventarios);
 export default routerInventario;

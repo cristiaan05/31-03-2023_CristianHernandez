@@ -5,44 +5,44 @@ import { dbfun } from "../index.js";
 export async function getProducts(req, res) {
     const pool = await dbfun();
     const result = await pool.request().query(querys.getAllProducts);
-    console.log(result.recordset)
+    //console.log(result.recordset)
     return res.status(200).send({ productos: result.recordset });
 }
 
-export async function getProducById(req,res){
-    const {idProducto}=req.body;
+export async function getProducById(req, res) {
+    const { idProducto } = req.body;
     try {
-        const pool=await  dbfun();
+        const pool = await dbfun();
 
-        let product=await pool.request()
-            .input("IdProducto",sql.Int,idProducto)
+        let product = await pool.request()
+            .input("IdProducto", sql.Int, idProducto)
             .query(querys.getProducById);
-        
-        if (product.recordset.length!=0) {
-            
+
+        if (product.recordset.length != 0) {
+
             return res.status(200).send({
-                message:"Successfull",
+                message: "Successfull",
                 product: product.recordset[0]
             })
-        }else{
+        } else {
             return res.status(403).send({
-                message:"No se encontro ningun producto"
+                message: "No se encontro ningun producto"
             })
         }
     } catch (error) {
         return res.status(400).send({
-            message:"Error getting the product",
-            error:error
+            message: "Error getting the product",
+            error: error
         })
     }
 }
 
 export async function addProduct(req, res) {
     const { nombreProducto, idCategoria, descripcion } = req.body;
-    if(nombreProducto==null || idCategoria==null){
+    if (nombreProducto == null || idCategoria == null) {
         return res.status(400).send({
-            message:"Data is missing",
-            successfull:false
+            message: "Data is missing",
+            successfull: false
         })
     }
     try {
@@ -54,7 +54,7 @@ export async function addProduct(req, res) {
         if (existeCategoria.recordset.length == 0) {
             return res.status(400).send({
                 message: "La categoria no existe",
-                successfull:false
+                successfull: false
             });
         } else {
             try {
@@ -67,12 +67,12 @@ export async function addProduct(req, res) {
                 return res.status(200).send({
                     message: "Producto Añadido exitosamente",
                     producto: { nombreProducto, idCategoria, descripcion },
-                    successfull:true
+                    successfull: true
                 })
             } catch (error) {
                 return res.status(400).send({
                     error: error,
-                    successfull:false
+                    successfull: false
                 })
             }
 
@@ -100,13 +100,14 @@ export async function updateProduct(req, res) {
             .input("IdCategoria", sql.Int, idCategoria)
             .input("Descripcion", sql.VarChar, descripcion)
             .query(querys.updateProduct);
-        if (updatedProduct.rowsAffected.length != 0) {
+        if (updatedProduct.rowsAffected[0] != 0) {
             return res.status(200).send({
                 message: "Updated successfuly",
+                successfull: true,
                 product: { idProducto, nombreProducto, idCategoria, descripcion }
             })
         } else {
-            return res.status(400).send({
+            return res.status(401).send({
                 message: "error", error
             })
         }
@@ -129,6 +130,7 @@ export async function deleteProduct(req, res) {
         if (productDeleted.rowsAffected.length != 0) {
             return res.status(200).send({
                 message: "Deleted successfuly",
+                successfull:true,
                 product: { idProducto }
             })
         } else {

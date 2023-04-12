@@ -49,6 +49,7 @@ export async function updateSucursal(req, res) {
     try {
         const pool = await getConnection();
         let updateSucursal = await pool.request()
+            .input("IdSucursal", sql.Int, idSucursal)
             .input("NombreSucursal", sql.VarChar, nombreSucursal)
             .input("Direccion", sql.VarChar, direccion)
             .input("Correo", sql.VarChar, correo)
@@ -82,8 +83,8 @@ export async function deleteSucursal(req, res) {
         let sucursalDeleted = await pool.request()
             .input("IdSucursal", sql.Int, idSucursal)
             .query(querys.deleteSucursal);
-
-        if (sucursalDeleted.rowsAffected.length != 0) {
+        console.log(sucursalDeleted)
+        if (sucursalDeleted.rowsAffected[0] != 0) {
             return res.status(200).send({
                 message: "Deleted successfuly",
                 category: { idSucursal },

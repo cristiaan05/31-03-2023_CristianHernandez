@@ -13,6 +13,8 @@ const columnas = [
     { titulo: "Nombre", nombre: "NombreProducto" },
     { titulo: "Categoria", nombre: "Nombre" },
     { titulo: "Descripcion", nombre: "Descripcion" },
+    { titulo: "", nombre: "" },
+    { titulo: "", nombre: "" },
 ];
 
 function Productos() {
@@ -35,10 +37,8 @@ function Productos() {
     return (
         <div>
             <Container style={{ margin: '0 auto', paddingTop: '20px', padding: '50px' }}>
-                <Boton contenido="Eliminar " color="danger" />
-                <Boton contenido="Editar " color="secondary" />
                 <Boton contenido="Nueva " color="primary" accion={redirect}/>
-                <Tabla columnas={columnas} data={productos} />
+                <Tabla columnas={columnas} data={productos} tipoTabla="productos"/>
             </Container>
         </div>
     );

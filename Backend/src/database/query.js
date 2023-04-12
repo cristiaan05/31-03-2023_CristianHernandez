@@ -4,7 +4,7 @@ export const querys = {
     getProducById: "EXECUTE sp_BuscarProducto @IdProducto;",
     addNewProduct: "EXECUTE sp_AgregarProducto @NombreProducto,@IdCategoria,@Descripcion;",
     deleteProduct: "EXECUTE sp_EliminarProducto @IdProducto;",
-    updateProduct: "sp_ModificarProducto @IdProducto, @NombreProducto, @IdCategoria, @Descripcion;",
+    updateProduct: "execute sp_ModificarProducto @IdProducto, @NombreProducto, @IdCategoria, @Descripcion;",
 
     //--------------------------CATEGORIAS QUERY------------------------------
 

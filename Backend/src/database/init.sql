@@ -111,7 +111,7 @@ AS
 	BEGIN
 		BEGIN TRY
 			BEGIN TRAN
-				SELECT IdProducto,NombreProducto,Categorias.Nombre,Descripcion
+				SELECT IdProducto,NombreProducto,Categorias.IdCategoria,Categorias.Nombre,Descripcion
 				FROM Productos INNER JOIN Categorias ON Productos.IdCategoria=Categorias.IdCategoria
 			COMMIT TRAN;
 		END TRY
@@ -357,8 +357,10 @@ AS
 	BEGIN
 		BEGIN TRY
 			BEGIN TRAN
-				SELECT *
+				SELECT IdInventario,Productos.IdProducto,Productos.NombreProducto,Sucursales.IdSucursal,Sucursales.NombreSucursal,cantidad
 				FROM Inventarios
+				INNER JOIN Sucursales ON Inventarios.id_sucursal = Sucursales.IdSucursal
+				INNER JOIN Productos ON Inventarios.id_producto = Productos.IdProducto;
 			COMMIT TRAN;
 		END TRY
 		BEGIN CATCH
@@ -374,6 +376,7 @@ select * from Sucursales;
 select * from Inventarios;
 
 delete from Categorias where IdCategoria=1;
+
 
 
 

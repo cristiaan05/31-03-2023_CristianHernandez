@@ -16,6 +16,8 @@ const columnas = [
     { titulo: "Departamento", nombre: "Departamento" },
     { titulo: "Municipio", nombre: "Municipio" },
     { titulo: "Telefono", nombre: "Telefono" },
+    { titulo: "Editar", nombre: "" },
+    { titulo: "Eliminar", nombre: "" },
 ];
 
 function Sucursales() {
@@ -38,10 +40,8 @@ function Sucursales() {
     return (
         <div>
             <Container style={{ margin: '0 auto', paddingTop: '20px', padding: '50px' }}>
-                <Boton contenido="Eliminar " color="danger" />
-                <Boton contenido="Editar " color="secondary" />
                 <Boton contenido="Nueva " color="primary" accion={redirect}/>
-                <Tabla columnas={columnas} data={sucursales} />
+                <Tabla columnas={columnas} data={sucursales} tipoTabla="sucursales"/>
             </Container>
         </div>
     );

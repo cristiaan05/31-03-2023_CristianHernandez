@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 const columnas = [
     { titulo: "Id", nombre: "IdCategoria" },
     { titulo: "Nombre", nombre: "Nombre" },
+    { titulo: "", nombre: "" },
+    { titulo: "", nombre: "" },
 ];
 
 function Categorias() {
@@ -32,10 +34,8 @@ function Categorias() {
     return (
         <div>
             <Container style={{ margin: '0 auto', paddingTop: '20px', padding: '50px' }}>
-                <Boton contenido="Eliminar " color="danger" />
-                <Boton contenido="Editar " color="secondary" />
                 <Boton contenido="Nueva " color="primary" accion={redirect}/>
-                <Tabla columnas={columnas} data={categorias} />
+                <Tabla columnas={columnas} data={categorias} tipoTabla="categorias"/>
             </Container>
         </div>
     );

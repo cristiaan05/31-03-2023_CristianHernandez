@@ -72,7 +72,7 @@ export async function updateInventario(req, res) {
     try {
         const pool = await dbfun();
         let updateInventario = await pool.request()
-            .input("IdProducto", sql.Int, idInventario)
+            .input("IdInventario", sql.Int, idInventario)
             .input("IdProducto", sql.Int, idProducto)
             .input("idSucursal", sql.Int, idSucursal)
             .input("cantidad", sql.Int, cantidad)

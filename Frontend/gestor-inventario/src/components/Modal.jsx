@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { store } from '../providers/store';
 import { getCategoriasAll } from '../providers/categoriasSlice';
 import { Departamentos } from "../guatemala";
+import { getProductosAll } from '../providers/productosSlice';
+import { getSucursalesAll } from '../providers/sucursalSlice';
 
 function ModalForm({ titulo, content }) {
     const [show, setShow] = useState(true);
@@ -19,21 +21,27 @@ function ModalForm({ titulo, content }) {
 
     //DATOS PARA FORM PRODUCTOS
     const [formDataP, setFormDataP] = useState({ nombreProducto: '', idCategoria: '', descripcion: '' })
-    const { rutaProducto } = useSelector(state => state.productos);
-    const dispatch = useDispatch()
-    function cargar() {
-        dispatch(getCategoriasAll())
-    }
+    const { rutaProducto, productos } = useSelector(state => state.productos);
 
     //DATOS PARA FORM SUCURSALES
     const [formDataS, setFormDataS] = useState({ nombreSucursal: '', direccion: '', correo: '', departamento: '', municipio: '', telefono: '' })
-    const { rutaSucursal } = useSelector(state => state.sucursales);
+    const { rutaSucursal, sucursales } = useSelector(state => state.sucursales);
+
+    //DATOS PARA FORM INVENTARIOS
+    const [formDataI, setFormDataI] = useState({ idProducto: '', idSucursal: '', cantidad: '' })
+    const dispatch = useDispatch()
+
+    function cargar() {
+        dispatch(getCategoriasAll())
+        dispatch(getProductosAll())
+        dispatch(getSucursalesAll())
+    }
 
     useEffect(() => {
         cargar()
         //setAccountsUser(accounts)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [content])
 
 
     const navigate = useNavigate();
@@ -48,6 +56,9 @@ function ModalForm({ titulo, content }) {
                 return
             case 'sucursal':
                 navigate(rutaSucursal);
+                return
+            case 'inventario':
+                navigate('/');
                 return
             default:
                 return null;
@@ -156,9 +167,10 @@ function ModalForm({ titulo, content }) {
                             value={formDataP.idCategoria}
                             onChange={handleInputChangeP}
                         >
+                             <option value="">Seleccione una categoria</option>
                             {categorias && categorias.map((cat) => (
                                 <option key={cat.IdCategoria} value={cat.IdCategoria}>
-                                    {cat.IdCategoria}
+                                    {cat.Nombre}
                                 </option>
                             ))}
                         </Form.Select>
@@ -181,7 +193,7 @@ function ModalForm({ titulo, content }) {
                     const { name, value } = e.target;
                     setFormDataS({ ...formDataS, [name]: value });
                 }
-                
+
                 //let muni=municipios[formDataS.departamento]
                 const handleSubmitSucursal = async (e) => {
                     e.preventDefault()
@@ -245,6 +257,7 @@ function ModalForm({ titulo, content }) {
                             value={formDataS.departamento}
                             onChange={handleInputChangeS}
                         >
+                             <option value="">Seleccione un departamento</option>
                             {Departamentos && Departamentos.map((cat, index) => (
                                 <option key={index} value={cat.nombre}>
                                     {cat.nombre}
@@ -260,7 +273,7 @@ function ModalForm({ titulo, content }) {
                             value={formDataS.municipio}
                             onChange={handleInputChangeS}
                         >
-
+                             <option value="">Seleccione un municipio</option>
                             {departa && departa.muni.map((cat, index) => (
                                 <option key={index} value={cat}>
                                     {cat}
@@ -280,6 +293,87 @@ function ModalForm({ titulo, content }) {
                     </Button>
                 </Form>;
 
+            case 'inventario':
+                const handleInputChangeI = (e) => {
+                    const { name, value } = e.target;
+                    setFormDataI({ ...formDataI, [name]: value });
+                    //console.log(e.target)
+                }
+                const handleSubmitI = async (e) => {
+                    e.preventDefault()
+                    try {
+                        console.log(formDataI)
+                        const response = await fetch('http://localhost:3800/addInventario', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                idProducto: formDataI.idProducto,
+                                idSucursal: formDataI.idSucursal,
+                                cantidad: formDataI.cantidad,
+
+                            })
+                        });
+
+                        let responseJson = await response.json();
+                        console.log(responseJson);
+
+                        if (responseJson.successfull) {
+                            setSuccessfull(true)
+                        } else {
+                            console.log("error")
+
+                        }
+                    } catch (error) {
+                        console.log(error)
+                    }
+
+                }
+                return <Form onSubmit={handleSubmitI}>
+                    <Form.Group className="mb-3" id="idProducto">
+                        <Form.Label>Producto</Form.Label>
+                        <Form.Select
+                            id="idProducto"
+                            name="idProducto"
+                            value={formDataI.idProducto}
+                            onChange={handleInputChangeI}
+                        >
+                             <option value="">Seleccione un producto</option>
+                            {productos && productos.map((product) => (
+                                <option key={product.IdProducto} value={product.IdProducto}>
+                                    {product.NombreProducto}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3" id="idSucursal">
+                        <Form.Label>Sucursal</Form.Label>
+                        <Form.Select
+                            id="idSucursal"
+                            name="idSucursal"
+                            value={formDataI.idSucursal}
+                            onChange={handleInputChangeI}
+                        >
+                            <option value="">Seleccione una sucursal</option>   
+                            {sucursales && sucursales.map((sucur) => (
+                                <option key={sucur.IdSucursal} value={sucur.IdSucursal}>
+                                    {sucur.NombreSucursal}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3" id="cantidad">
+                        <Form.Label>Cantidad</Form.Label>
+                        <Form.Control type="number"
+                            placeholder="Ingrese cantidad"
+                            name='cantidad'
+                            value={formDataI.cantidad} onChange={handleInputChangeI} />
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Crear Inventario
+                    </Button>
+                </Form>;
             default:
                 return null;
         }
